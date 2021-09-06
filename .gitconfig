@@ -1,0 +1,7 @@
+[user]
+	email = spreadwebng@gmail.com
+	name = OLUWASEUN OMOTUNDE
+[push]
+	default = matching
+[credential]
+	helper = cache --timeout=600
