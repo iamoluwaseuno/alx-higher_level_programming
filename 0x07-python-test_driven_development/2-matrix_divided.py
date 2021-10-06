@@ -1,27 +1,51 @@
 #!/usr/bin/python3
-"""Matrix division"""
+'''Contains a matrix_divided function for a TDD project.
+'''
 
 
 def matrix_divided(matrix, div):
-    """Divides every element of a matrix
+    '''Divides all elements of a matrix.
+
     Args:
-        matrix (list): A list of lists of integers
-        or floats div (int/float): The divisor.
+        matrix (list): The matrix whose elements are to be divided.
+        div (int): The number to use as a divisor.
 
-    """
-
-    if type(div) not in [int, float]:
-        raise TypeError("div must be a number")
-    if div == 0:
-        raise ZeroDivisionError(
-            "Each row of the matrix must have the same size")
-
-    if not all(len(row) == len(matrix[0]) for row in matrix):
-        raise TypeError("Each row of the matrix must have the same size")
-    if not all(type(num) in [int, float] for row in matrix for num in row):
-        raise TypeError("matrix must be a matrix (list of lists)"
-                        " of integers/floats")
-
-    new_matrix = [[eval("{:.2f}".format(num / div)) for num in row]
-                  for row in matrix]
-    return new_matrix
+    Returns:
+        list: A new list consiting of the result of dividing each element
+        in the given matrix by div.
+    '''
+    messages = (
+        'matrix must be a matrix (list of lists) of integers/floats',
+        'Each row of the matrix must have the same size',
+        'div must be a number',
+        'division by zero'
+    )
+    size = [0, 0]
+    res = []
+    if not isinstance(matrix, list):
+        raise TypeError(messages[0])
+    size[0] = len(matrix)
+    if size[0] == 0:
+        raise TypeError(messages[0])
+    for row in matrix:
+        if not isinstance(row, list):
+            raise TypeError(messages[0])
+        elif len(row) == 0:
+            raise TypeError(messages[0])
+        else:
+            if size[1] == 0:
+                size[1] = len(row)
+            elif len(row) != size[1]:
+                raise TypeError(messages[1])
+            for col in row:
+                if not isinstance(col, (int, float)):
+                    raise TypeError(messages[0])
+    if not isinstance(div, (int, float)):
+        raise TypeError(messages[2])
+    elif div == 0:
+        raise ZeroDivisionError(messages[3])
+    else:
+        for row in matrix:
+            res_row = list(map(lambda x: round(x / div, 2), row))
+            res.append(res_row)
+        return res

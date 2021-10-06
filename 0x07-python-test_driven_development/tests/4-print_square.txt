@@ -1,46 +1,42 @@
-A test to for the print_square function
-
-Import the module
->>> import sys
->>> sys.path.insert(1, '../')
->>> lib = __import__("4-print_square")
->>> func = lib.print_square
-
-#Normal addition test
 '''
->>> func(3)
-###
-###
-###
+# Import the required function
+>>> from importlib import import_module
+>>> print_square = import_module('4-print_square').print_square
 
+# Valid arguments
+>>> print_square(2)
+##
+##
+>>> print_square(0)
 
-#Type Errors
+>>> print_square(6)
+######
+######
+######
+######
+######
+######
 
->>> func("")
-Traceback (most recent call last):
-...
-TypeError: size must be an integer
->>> func(12.3)
-Traceback (most recent call last):
-...
-TypeError: size must be an integer
->>> func([])
-Traceback (most recent call last):
-...
-TypeError: size must be an integer
->>> func({})
-Traceback (most recent call last):
-...
-TypeError: size must be an integer
->>> func(1j)
-Traceback (most recent call last):
-...
-TypeError: size must be an integer
+# Invalid arguments
+>>> try:
+...     print_square(2.0)
+... except TypeError as ex:
+...     print(ex.args[0])
+size must be an integer
+>>> try:
+...     print_square([12])
+... except TypeError as ex:
+...     print(ex.args[0])
+size must be an integer
+>>> try:
+...     print_square(-3.3)
+... except TypeError as ex:
+...     print(ex.args[0])
+size must be an integer
+>>> try:
+...     print_square(-3)
+... except ValueError as ex:
+...     print(ex.args[0])
+size must be >= 0
 
-
-
-#value Errors
->>> func(-1)
-Traceback (most recent call last):
-...
-ValueError: size must be >= 0
+'''

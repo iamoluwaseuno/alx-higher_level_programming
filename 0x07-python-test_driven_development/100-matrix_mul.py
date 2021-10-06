@@ -1,65 +1,73 @@
 #!/usr/bin/python3
-#Author Hileamlak M. Yitayew
+'''Contains a get_matrix_size and a matrix_mul function for a TDD project.
+'''
+
+
+def get_matrix_size(matrix, name):
+    '''Computes the size of a matrix and performs some
+    matrix validation.
+
+    Args:
+        matrix (list): The matrix.
+        name (str): The name of the matrix.
+
+    Returns:
+        list. The rows and columns of the given matrix.
+    '''
+    error_messages = (
+        '{} must be a list'.format(name),
+        '{} can\'t be empty'.format(name),
+        '{} must be a list of lists'.format(name),
+        '{} should contain only integers or floats'.format(name),
+        'each row of {} must be of the same size'.format(name),
+    )
+    size = [0, 0]
+    if not isinstance(matrix, list):
+        raise TypeError(error_messages[0])
+    size[0] = len(matrix)
+    if size[0] == 0:
+        raise ValueError(error_messages[1])
+    if not all(map(lambda x: isinstance(x, list), matrix)):
+        raise TypeError(error_messages[2])
+    if all(map(lambda x: len(x) == 0, matrix)):
+        raise ValueError(error_messages[1])
+    if not all(map(
+        lambda x: all(map(
+            lambda y: isinstance(y, (int, float)), x)), matrix)):
+        raise TypeError(error_messages[3])
+    size[1] = len(matrix[0])
+    if not all(map(lambda x: len(x) == size[1], matrix)):
+        raise TypeError(error_messages[4])
+    return size
 
 
 def matrix_mul(m_a, m_b):
-    """Multiplies two matricies
-    """
+    '''Multiplies 2 matrices.
 
-    # check if the two matrix's aren't empty
-    if type(m_a) != list:
-        raise TypeError("m_a must be a list")
-    if type(m_b) != list:
-        raise TypeError("m_b must be a list")
-    if len(m_a) == 0:
-        raise ValueError("m_a can't be empty")
-    # check the validity of the content of each elemtent
-    # for matrix a
-    if not all(type(row) == list for row in m_a):
-        raise TypeError("m_a must be a list of lists")
-    if len(m_a[0]) == 0:
-        raise ValueError("m_a can't be empty")
+    Args:
+        m_a (list): The first matrix.
+        m_b (list): The second matrix.
 
-    # check the validity of the content of each elemtent
-    # for matrix b
-    if not all(type(row) == list for row in m_b):
-        raise TypeError("m_b must be a list of lists")
-    if len(m_b) == 0:
-        raise ValueError("m_b can't be empty")
-    if len(m_b[0]) == 0:
-        raise ValueError("m_b can't be empty")
+    Returns:
+        list: A list of lists of the products of the two given matrices.
 
-    # Check the validity of the content of each list
-    # inside each list of matrix a
-    row_len = len(m_a[0])
-    if not all(len(row) == row_len for row in m_a):
-        raise TypeError("each row of m_a must be of the same size")
-
-    if not all(type(num) in [int, float] for row in m_a for num in row):
-        raise TypeError("m_a should contain only integers or floats")
-    # Check the validity of the content of each list
-    # inside each list of matrix a
-    row_len = len(m_b[0])
-    if not all(len(row) == row_len for row in m_b):
-        raise TypeError("each row of m_b must be of the same size")
-
-    if not all(type(num) in [int, float] for row in m_b for num in row):
-        raise TypeError("m_b should contain only integers or floats")
-    # check if the two vectors are multipliable
-    acols = len(m_a[0])
-    arows = len(m_a)
-    brows = len(m_b)
-    bcols = len(m_b[0])
-    if acols != brows:
-        raise ValueError("m_a and m_b can't be multiplied")
-
-    product = [[0 for x in range(bcols)] for y in range(arows)]
-    for row_i in range(len(m_a)):
-        col_b = 0
-        while (col_b < bcols):
-            sum_t = 0
-            for col_i in range(len(m_a[row_i])):
-                sum_t += m_a[row_i][col_i] * m_b[col_i][col_b]
-            product[row_i][col_b] = sum_t
-            col_b += 1
-    return product
+    Raises:
+        ValueError: If m_a's column count isn't equal to m_b's row count.
+    '''
+    a_sz = get_matrix_size(m_a, 'm_a')
+    b_sz = get_matrix_size(m_b, 'm_b')
+    # AB only works iff column_count in A == row_count in B
+    if a_sz[1] != b_sz[0]:
+        raise ValueError('m_a and m_b can\'t be multiplied')
+    else:
+        res = []
+        for row_a in m_a:
+            row_res = []
+            for i in range(b_sz[1]):
+                val = map(
+                        lambda x: x[1] * m_b[x[0]][i],
+                        zip(range(a_sz[1]), row_a)
+                        )
+                row_res.append(sum(list(val)))
+            res.append(row_res)
+        return res

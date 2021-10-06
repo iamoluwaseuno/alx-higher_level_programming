@@ -1,24 +1,19 @@
 #!/usr/bin/python3
-"""Unittest for max_integer([..])"""
+'''A unittest module for the max_integer function.
+'''
 import unittest
-max_integer = __import__('6-max_integer').max_integer
+from importlib import import_module
 
 
 class TestMaxInteger(unittest.TestCase):
-    """Test case for the max_integer_function
-
-    """
-
-    def test_typeErrors(self):
-        self.assertRaises(TypeError, max_integer, 1)
-        self.assertRaises(TypeError, max_integer, 1.3)
-        self.assertRaises(TypeError, max_integer, -3)
-        self.assertRaises(TypeError, max_integer, 2j)
-        self.assertRaises(TypeError, max_integer, [2j, 3])
-        self.assertRaises(TypeError, max_integer, [-2, "90"])
-
-    def test_normalResults(self):
-        self.assertEqual(max_integer([1, 2, 3]), 3)
-        self.assertEqual(max_integer([-1000000, 1, 2, 3]), 3)
-        self.assertEqual(max_integer([-1000000, 10000, 2.5, 3, 10000000000]),
-                         10000000000)
+    '''Tests the max_integer function.
+    '''
+    def test_area(self):
+        '''The equality tests for the max_integer function.
+        '''
+        max_integer = import_module('6-max_integer', '..').max_integer
+        self.assertEqual(max_integer([]), None)
+        self.assertEqual(max_integer([7, 2, -3, 45, 6]), 45)
+        self.assertEqual(max_integer([7, 2, 45, 6]), 45)
+        self.assertEqual(max_integer([-7, -2, -45, -6]), -2)
+        self.assertEqual(max_integer([-7, 1, -18, -6]), 1)

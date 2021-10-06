@@ -1,68 +1,22 @@
-A test for the say_my_name function
+'''
+# Import the required function
+>>> from importlib import import_module
+>>> say_my_name = import_module('3-say_my_name').say_my_name
 
-Import the module
->>> import sys
->>> sys.path.insert(1, '../')
->>> lib = __import__("3-say_my_name")
->>> func = lib.say_my_name
->>> fn1 = "Musa"
->>> ln1 = "Kanneh"
->>> fn2 = 4
->>> ln2 = 5
+# Valid arguments
+>>> say_my_name("Naruto", "Uzumaki")
+My name is Naruto Uzumaki
 
+# Invalid arguments
+>>> try:
+...     say_my_name("Naruto", 87)
+... except TypeError as ex:
+...     print(ex.args[0])
+last_name must be a string
+>>> try:
+...     say_my_name(3.14, "Uzumaki")
+... except TypeError as ex:
+...     print(ex.args[0])
+first_name must be a string
 
-#Normal Test
->>> func(fn1, ln1)
-My name is Musa Kanneh
-
-#Type Errors
->>> func(fn1, ln2)
-Traceback (most recent call last):
-...
-TypeError: last_name must be a string
->>> func(fn2, ln1)
-Traceback (most recent call last):
-...
-TypeError: first_name must be a string
-
-
->>> fn2 = 4.3
->>> ln2 = 5.7
-
-
->>> func(fn1, ln2)
-Traceback (most recent call last):
-...
-TypeError: last name must be a string
->>> func(fn2, ln1)
-Traceback (most recent call last):
-...
-TypeError: first name must be a string
-
-
-
->>> fn2 = 3 + 1j
->>> ln2 = []
-
-
->>> func(fn1, ln2)
-Traceback (most recent call last):
-...
-TypeError: last_name must be a string
->>> func(fn2, ln1)
-Traceback (most recent call last):
-...
-TypeError: first_name must be a string
-
->>> fn2 = {}
->>> ln2 = 3 + 1j
-
-
->>> func(fn1, ln2)
-Traceback (most recent call last):
-...
-TypeError: last name must be a string
->>> func(fn2, ln1)
-Traceback (most recent call last):
-...
-TypeError: first name must be a string
+'''
